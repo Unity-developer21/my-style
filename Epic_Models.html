@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Epic Models</title>
+  <style>
+    * {
+      margin: 0; padding: 0; box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      transition: background-color 0.3s, color 0.3s;
+    }
+    body {
+      background-color: #f0f4f8;
+      color: #222;
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      font-size: 18px; line-height: 1.6;
+      padding: 20px;
+    }
+    header {
+      display: flex; justify-content: space-between; align-items: center;
+      padding-bottom: 20px; border-bottom: 2px solid #ddd;
+    }
+    .logo {
+      font-weight: 900; font-size: 28px; color: #0077ff;
+      user-select: none; letter-spacing: 2px;
+    }
+    .theme-toggle {
+      cursor: pointer;
+      background-color: #0077ff; border: none;
+      color: white; padding: 10px 18px;
+      font-weight: 600; border-radius: 6px;
+      box-shadow: 0 3px 8px rgb(0 119 255 / 0.4);
+      user-select: none; font-size: 16px;
+      transition: background-color 0.3s;
+    }
+    .theme-toggle:hover {
+      background-color: #005fcc;
+    }
+    main {
+      flex-grow: 1;
+      max-width: 900px;
+      margin: 40px auto 60px;
+      padding: 0 20px;
+      text-align: center;
+      font-weight: 500;
+      color: #333;
+    }
+    main p {
+      font-size: 1.25rem;
+      margin-bottom: 40px;
+      white-space: pre-line;
+    }
+    .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      flex-wrap: wrap;
+    }
+    button.btn {
+      background-color: #fff;
+      border: 2px solid #0077ff;
+      color: #0077ff;
+      font-weight: 700;
+      font-size: 18px;
+      padding: 12px 28px;
+      border-radius: 10px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 4px 10px rgb(0 119 255 / 0.15);
+      transition: background-color 0.3s, color 0.3s;
+      user-select: none;
+      height: 48px;
+      min-width: 140px;
+    }
+    button.btn:hover {
+      background-color: #0077ff;
+      color: white;
+      box-shadow: 0 6px 15px rgb(0 119 255 / 0.5);
+    }
+    .btn svg {
+      width: 28px;
+      height: 28px;
+      fill: currentColor;
+      flex-shrink: 0;
+      display: block;
+    }
+    /* Для Kaspi: заливка override */
+    .btn.kaspi svg circle {
+      fill: #00A14B;
+      stroke: none;
+    }
+    .btn.kaspi svg path {
+      fill: white;
+    }
+    /* Темная тема */
+    body.dark {
+      background-color: #121212;
+      color: #e0e0e0;
+    }
+    body.dark header {
+      border-color: #333;
+    }
+    body.dark .logo {
+      color: #66aaff;
+    }
+    body.dark main {
+      color: #ddd;
+    }
+    body.dark button.btn {
+      background-color: #222;
+      border-color: #66aaff;
+      color: #66aaff;
+      box-shadow: 0 4px 10px rgb(102 170 255 / 0.4);
+    }
+    body.dark button.btn:hover {
+      background-color: #66aaff;
+      color: #121212;
+      box-shadow: 0 6px 15px rgb(102 170 255 / 0.7);
+    }
+    body.dark .theme-toggle {
+      background-color: #66aaff;
+      box-shadow: 0 3px 8px rgb(102 170 255 / 0.5);
+    }
+    /* FAQ стили */
+    #faq-section {
+      max-width: 900px;
+      margin: 20px auto 60px;
+      padding: 20px;
+      border: 2px solid #0077ff;
+      border-radius: 10px;
+      background: #ffffff;
+      color: #222;
+      display: none;
+      text-align: left;
+    }
+    #faq-section.dark {
+      background: #222;
+      color: #ddd;
+      border-color: #66aaff;
+    }
+    #faq-section h2 {
+      color: #0077ff;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+    .question {
+      cursor: pointer;
+      font-weight: 700;
+      background-color: #f0f4f8;
+      padding: 12px 15px;
+      border-radius: 6px;
+      border: 1.5px solid #0077ff;
+      margin-bottom: 8px;
+      user-select: none;
+      transition: background-color 0.3s;
+    }
+    .question:hover {
+      background-color: #dbe9ff;
+    }
+    #faq-section.dark .question {
+      background-color: #333;
+      border-color: #66aaff;
+    }
+    #faq-section.dark .question:hover {
+      background-color: #4466bb;
+    }
+    .answer {
+      display: none;
+      padding: 12px 15px;
+      border-left: 4px solid #0077ff;
+      background-color: #e9f0ff;
+      margin-bottom: 15px;
+      line-height: 1.4;
+      border-radius: 0 6px 6px 6px;
+    }
+    #faq-section.dark .answer {
+      background-color: #2a2a3a;
+      border-left-color: #66aaff;
+    }
+    ul {
+      margin-left: 20px;
+      margin-top: 8px;
+      margin-bottom: 8px;
+    }
+    ul li {
+      margin-bottom: 5px;
+    }
+    @media (max-width: 480px) {
+      .buttons {
+        flex-direction: column;
+        gap: 16px;
+      }
+      button.btn {
+        width: 100%;
+        justify-content: center;
+      }
+      #faq-section {
+        padding: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo">Epic Models</div>
+    <button class="theme-toggle" aria-label="Переключить тему">Тёмная тема</button>
+  </header>
+
+  <main>
+    <p>
+      Epic Models, мы печатаем игрушки на 3D принтере и выставляем их на Kaspi.kz а также в Instagram, игрушки полностью безопасны и подойдут как детям так и взрослым, PLA покупая наши игрушки вы подарите себе и своим детям много эмоций
+    </p>
+
+    <div class="buttons">
+      <!-- Кнопка Kaspi -->
+      <button class="btn kaspi" aria-label="Kaspi" onclick="window.open('https://kaspi.kz/shop/info/merchant/30355320/review/?productCode=143293536&tabId=PRODUCT&started_by=backdrop_offer_details&ref=shared_link&ut=2', '_blank')">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="28" height="28" fill="none" stroke="#00A14B" stroke-width="4" stroke-linejoin="round" stroke-linecap="round">
+          <circle cx="32" cy="32" r="30"/>
+          <path d="M20 40h24v-8H20z"/>
+          <path d="M20 32h24v-8H20z"/>
+        </svg>
+        Kaspi.kz
+      </button>
+
+      <!-- Кнопка Instagram -->
+      <button class="btn" aria-label="Instagram" onclick="window.open('https://www.instagram.com/3depicmodels?igsh=MW1sdWZrN2liZTVpaQ==', '_blank')">
+        <svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M7.75 2C4.098 2 2 4.098 2 7.75v8.5C2 19.902 4.098 22 7.75 22h8.5c3.652 0 5.75-2.098 5.75-5.75v-8.5C22 4.098 19.902 2 16.25 2h-8.5zm0 2h8.5c2.071 0 3.75 1.679 3.75 3.75v8.5c0 2.07-1.679 3.75-3.75 3.75h-8.5c-2.071 0-3.75-1.68-3.75-3.75v-8.5c0-2.071 1.679-3.75 3.75-3.75zm4.25 3a5 5 0 100 10 5 5 0 000-10zm0 2a3 3 0 110 6 3 3 0 010-6zm4.5-.75a1.25 1.25 0 11-2.5 0 1.25 1.25 0 012.5 0z"/>
+        </svg>
+        Instagram
+      </button>
+
+      <!-- Кнопка FAQ -->
+      <button class="btn" id="faq-btn">❓ Частые вопросы</button>
+    </div>
+
+    <section id="faq-section" aria-label="Частые вопросы">
+      <h2>Частые вопросы</h2>
+
+      <div class="question" tabindex="0">Из чего наши игрушки?</div>
+      <div class="answer">
+        <p>Все наши игрушки печатаются из PLA (полилактид) — безопасного и экологичного материала. PLA производится из натуральных источников, таких как кукурузный крахмал и сахарный тростник, поэтому не содержит токсичных добавок и не выделяет вредных веществ.</p>
+        <ul>
+          <li>Безопасность – PLA не токсичен и не выделяет вредных испарений.</li>
+          <li>Экологичность – биоразлагается в природных условиях, не засоряя окружающую среду.</li>
+          <li>Отсутствие запаха – игрушки не имеют неприятного химического запаха.</li>
+          <li>Яркие цвета – PLA хорошо держит цвет, и игрушки выглядят насыщенно и красиво.</li>
+          <li>Приятная поверхность – материал гладкий на ощупь, без острых краёв.</li>
+        </ul>
+        <p><strong>Важно:</strong> PLA-пластик чувствителен к высокой температуре (выше 60°C). Не оставляйте игрушки под прямыми солнечными лучами или возле источников тепла.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    const btn = document.querySelector('.theme-toggle');
+    const body = document.body;
+
+    function updateButtonText() {
+      if (body.classList.contains('dark')) {
+        btn.textContent = 'Светлая тема';
+      } else {
+        btn.textContent = 'Тёмная тема';
+      }
+    }
+
+    btn.addEventListener('click', () => {
+      body.classList.toggle('dark');
+      updateButtonText();
+
+      // Меняем стили FAQ секции для тёмной темы
+      const faq = document.getElementById('faq-section');
+      faq.classList.toggle('dark');
+    });
+
+    updateButtonText();
+
+    // Обработка FAQ
+    const faqBtn = document.getElementById('faq-btn');
+    const faqSection = document.getElementById('faq-section');
+    const question = faqSection.querySelector('.question');
+    const answer = faqSection.querySelector('.answer');
+
+    faqBtn.addEventListener('click', () => {
+      if (faqSection.style.display === 'block') {
+        faqSection.style.display = 'none';
+        answer.style.display = 'none'; // закрываем ответ при скрытии FAQ
+      } else {
+        faqSection.style.display = 'block';
+      }
+      // Скролл к FAQ если показываем
+      if (faqSection.style.display === 'block') {
+        faqSection.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+
+    question.addEventListener('click', () => {
+      answer.style.display = (answer.style.display === 'block') ? 'none' : 'block';
+    });
+    question.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        answer.style.display = (answer.style.display === 'block') ? 'none' : 'block';
+      }
+    });
+  </script>
+  <footer style="text-align:center; padding:15px 0; color:gray; font-size:14px; user-select:none;">
+  by AlenShatmanov
+</footer>
+
+</body>
+</html>
